@@ -1,12 +1,13 @@
 {
   "name": "create-next-example-app",
   "scripts": {
-    "dev": "next",
+    "dev": "node server/server.js",
     "build": "next build",
-    "start": "next start",
+    "start": "NODE_ENV=production node server/server.js",
     "precommit": "pretty-quick --staged"
   },
   "dependencies": {
+    "express": "^4.16.3",
     "next": "^6.1.1",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
