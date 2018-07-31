@@ -3,7 +3,10 @@
   "scripts": {
     "dev": "nodemon server/server.js",
     "build": "next build",
-    "run": "PORT=8000 node server/server.js",
+    "dc": "docker-compose -f docker/docker-compose.yml",
+    "run": "npm run dc -- up -d; npm run dc -- logs -f",
+    "stop": "npm run dc -- stop",
+    "dcbuild": "npm run dc -- build",
     "start": "NODE_ENV=production node server/server.js",
     "precommit": "pretty-quick --staged"
   },
