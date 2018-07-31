@@ -31,6 +31,8 @@ export default class ChartLoader extends Component {
     },
   };
 
+  sortDesc = (a, b) => (b[1] + b[2]) / 2 - (a[1] + a[2]) / 2;
+
   drawGraph = () => {
     const neo = neoJSON.near_earth_objects
       .map(neo => [
@@ -38,7 +40,7 @@ export default class ChartLoader extends Component {
         neo.estimated_diameter.kilometers.estimated_diameter_min,
         neo.estimated_diameter.kilometers.estimated_diameter_max,
       ])
-      .sort((a, b) => b[1] - a[1]);
+      .sort(this.sortDesc);
     const data = new google.visualization.arrayToDataTable([
       [
         'NEO Name',
