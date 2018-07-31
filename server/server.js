@@ -9,6 +9,14 @@ const handle = app.getRequestHandler();
 app.prepare().then(() => {
   const server = express();
 
+  server.post('/api/modifiers/:modifierId', (req, res) => {
+    res.json({ message: 'saved!' });
+  });
+
+  server.get('/api/modifiers', (req, res) => {
+    res.json([]);
+  });
+
   server.get('*', (req, res) => {
     return handle(req, res);
   });
