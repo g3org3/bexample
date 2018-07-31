@@ -17,6 +17,11 @@ export default class NeoChart extends Component {
   };
 
   async componentDidMount() {
+    await this.loadNeoNasaFromAPI();
+    await this.loadUserPrefereces();
+  }
+
+  async loadNeoNasaFromAPI() {
     const res = await fetch(API_URL);
     if (res.status < 300) {
       const data = await res.json();
@@ -35,15 +40,42 @@ export default class NeoChart extends Component {
     }
   }
 
+  async loadUserPrefereces() {
+    const res = await fetch('/api/modifiers');
+    if (res.status < 300) {
+      const modifiers = await res.json();
+      const value = modifiers.length ? modifiers.pop().name : '';
+      this.changeOrbitalBody({
+        value: value === 'null' ? '' : value,
+        save: false,
+      });
+    } else {
+      toast(res.statusText, { type: 'error' });
+    }
+  }
+
   toggle = () => {
     this.setState(s => ({
       dropdownOpen: !s.dropdownOpen,
     }));
   };
 
-  changeOrbitalBody = ({ target = {} } = {}) => {
-    this.filterByOrbitalBody(target.value);
-    this.setState({ selectedOrbitalBody: target.value });
+  changeOrbitalBody = async ({ value, save = true }) => {
+    this.filterByOrbitalBody(value);
+    this.setState({ selectedOrbitalBody: value });
+    if (save) {
+      try {
+        const res = await fetch(`/api/modifiers/${value || 'null'}`, {
+          method: 'POST',
+        });
+        if (res.status >= 300) {
+          toast('Could not save preferences', { type: 'warning' });
+        }
+      } catch (err) {
+        console.log(err.message);
+        toast('Could not save preferences', { type: 'warning' });
+      }
+    }
   };
 
   filterByOrbitalBody(selectedOrbitalBody) {
@@ -117,7 +149,7 @@ export default class NeoChart extends Component {
           <select
             className="form-control"
             value={selectedOrbitalBody}
-            onChange={this.changeOrbitalBody}
+            onChange={({ target = {} } = {}) => this.changeOrbitalBody(target)}
           >
             <option value="">All</option>
             {orbitalBodyOptions.map(name => (

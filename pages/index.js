@@ -15,7 +15,7 @@ const Home = () => (
     <Head title="Home" />
     <h1>NASA Neo - Data Visualization</h1>
     <NeoChart />
-    <ToastContainer autoClose={1000} />
+    <ToastContainer autoClose={1400} />
   </div>
 );
 
