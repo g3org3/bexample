@@ -1,16 +1,43 @@
 /* global google */
 import React, { Component } from 'react';
 import Script from 'react-load-script';
-import neoJSON from '../data/nasaneo.json';
+import PropTypes from 'prop-types';
 
 export default class ChartLoader extends Component {
-  state = { loaded: false, error: false };
+  static propTypes = {
+    titles: PropTypes.arrayOf(PropTypes.string),
+    data: PropTypes.arrayOf(PropTypes.array),
+  };
+
+  static defaultProps = {
+    titles: [
+      'NEO Name',
+      'Min Estimated Diameter (km)',
+      'Max Estimated Diameter (km)',
+    ],
+    data: [['', 0, 0]],
+  };
+  state = {
+    loaded: false,
+    error: false,
+    chart: false,
+  };
 
   onLoad = () => {
     this.setState({ loaded: true });
     google.charts.load('current', { packages: ['bar'] });
-    google.charts.setOnLoadCallback(this.drawGraph);
-    console.log('loaded');
+    google.charts.setOnLoadCallback(this.chartLoaded);
+  };
+
+  chartLoaded = () => {
+    const { titles, data } = this.props;
+    const chart = new google.charts.Bar(document.getElementById('dual_x_div'));
+    const dataTable = new google.visualization.arrayToDataTable([
+      titles,
+      ...data,
+    ]);
+    chart.draw(dataTable, this.options);
+    this.setState({ chart });
   };
 
   options = {
@@ -31,30 +58,8 @@ export default class ChartLoader extends Component {
     },
   };
 
-  drawGraph = () => {
-    const neo = neoJSON.near_earth_objects
-      .map(neo => [
-        neo.name,
-        neo.estimated_diameter.kilometers.estimated_diameter_min,
-        neo.estimated_diameter.kilometers.estimated_diameter_max,
-      ])
-      .sort((a, b) => b[1] - a[1]);
-    const data = new google.visualization.arrayToDataTable([
-      [
-        'NEO Name',
-        'Min Estimated Diameter (km)',
-        'Max Estimated Diameter (km)',
-      ],
-      ...neo,
-    ]);
-
-    const chart = new google.charts.Bar(document.getElementById('dual_x_div'));
-    chart.draw(data, this.options);
-  };
-
   onError = () => {
     this.setState({ error: false });
-    console.log('error');
   };
 
   render() {
