@@ -9,7 +9,8 @@
   "dependencies": {
     "next": "^6.1.1",
     "react": "^16.4.1",
-    "react-dom": "^16.4.1"
+    "react-dom": "^16.4.1",
+    "react-load-script": "^0.0.6"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.6",
