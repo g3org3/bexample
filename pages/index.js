@@ -1,10 +1,15 @@
 import React from 'react';
 import Head from '../components/head';
-import NeoChart from '../components/NeoChartLoader';
+import NeoChart from '../components/NeoChart';
 
 const Home = () => (
   <div
-    style={{ margin: '0px auto', maxWidth: '1000px', fontFamily: 'helvetica' }}
+    style={{
+      margin: '0px auto',
+      paddingTop: '40px',
+      maxWidth: '1000px',
+      fontFamily: 'helvetica',
+    }}
   >
     <Head title="Home" />
     <h1>NASA Neo - Data Visualization</h1>
