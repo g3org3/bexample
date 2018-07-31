@@ -18,6 +18,8 @@ export default class NeoChart extends Component {
     }
   }
 
+  sortDesc = (a, b) => (b[1] + b[2]) / 2 - (a[1] + a[2]) / 2;
+
   transformToGraphData(neoJSON) {
     return neoJSON.near_earth_objects
       .map(neo => [
@@ -25,7 +27,7 @@ export default class NeoChart extends Component {
         neo.estimated_diameter.kilometers.estimated_diameter_min,
         neo.estimated_diameter.kilometers.estimated_diameter_max,
       ])
-      .sort((a, b) => b[1] - a[1]);
+      .sort(this.sortDesc);
   }
 
   render() {
