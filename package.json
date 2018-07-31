@@ -3,6 +3,7 @@
   "scripts": {
     "dev": "nodemon server/server.js",
     "build": "next build",
+    "run": "PORT=8000 node server/server.js",
     "start": "NODE_ENV=production node server/server.js",
     "precommit": "pretty-quick --staged"
   },
