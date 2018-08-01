@@ -1,5 +1,6 @@
 {
-  "name": "create-next-example-app",
+  "name": "botify-challenge",
+  "version": "4.0.0",
   "scripts": {
     "dev": "nodemon server/server.js",
     "build": "next build",
